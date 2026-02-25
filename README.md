@@ -15,6 +15,12 @@ This tutorial demonstrates building a **real-time, industry-level Power BI dashb
 - **In Scope:** Facebook and Instagram paid ads
 - **Out of Scope:** Messenger, Audience Network, organic engagement
 
+> Example outputs of the completed dashboard.
+
+### Facebook and Instagram Performance Dashboard
+
+![Final Dashboard](imgs/Dashboard.png)
+
 ---
 
 ## DATASET STRUCTURE
