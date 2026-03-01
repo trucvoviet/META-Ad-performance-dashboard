@@ -684,37 +684,6 @@ Select measure > $ symbol > Dollar format > 1 decimal
 - Font: Segoe UI Semibold, Black
 - Decimals: 0 for percentage
 
-**Legend:** Turned off
-
-**Dynamic Title:**
-
-```DAX
-Gender Title = 
-SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) & " by Gender"
-```
-
-**Where Dynamic Title Column:**
-```DAX
-Dynamic Title = 
-IF('Select Dynamic Measure'[Select Measure Order] = 0, "Impressions",
-IF('Select Dynamic Measure'[Select Measure Order] = 1, "Engagements",
-IF('Select Dynamic Measure'[Select Measure Order] = 2, "Clicks",
-IF('Select Dynamic Measure'[Select Measure Order] = 3, "Shares",
-IF('Select Dynamic Measure'[Select Measure Order] = 4, "Comments",
-IF('Select Dynamic Measure'[Select Measure Order] = 5, "Purchases",
-"Other"))))))
-```
-
-**Title Display:**
-- Font: Segoe UI Semibold, Size 12
-- No background
-- Position: Above chart
-
-**Insights:**
-- 44% Female target
-- 35% All (both genders)
-- 21% Male target
-
 ### 2. Target Age (Column Chart)
 
 **Component:** Clustered Column Chart
@@ -759,21 +728,6 @@ Filters on Visual > User Age > Less Than 51
 - Chart Height: 160 pixels
 - Chart Width: 440 pixels
 
-**Dynamic Title:**
-
-```DAX
-Age Title = 
-SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) & " by Age"
-```
-
-**Insights:**
-- Peak at age 16 (highest engagement)
-- Gradual increase from 16-26
-- Decline after age 30
-- Lowest at age 50
-
-**Interpretation:** Young people (16-26) use Instagram/Facebook most
-
 ### 3. Engagement by Country (Map)
 
 **Component:** Map Chart (traditional) or Azure Map
@@ -797,12 +751,6 @@ SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) & " by Age"
 
 **Title:** Off (using dynamic title)
 
-**Dynamic Title:**
-
-```DAX
-Map Title = 
-SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) & " by Country"
-```
 
 **Alternate: Azure Map**
 
