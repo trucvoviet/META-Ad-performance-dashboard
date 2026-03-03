@@ -3,6 +3,14 @@
 ## Overview
 This tutorial demonstrates building a **real-time, industry-level Power BI dashboard** to analyze advertising performance across Meta platforms (Facebook and Instagram). The project uses advanced data modeling with multiple tables, complex DAX calculations, and interactive visualizations to track campaign effectiveness, audience engagement, and ROI.
 
+> Example outputs of the completed dashboard.
+
+### Facebook and Instagram Performance Dashboard
+
+![Final Dashboard](imgs/Dashboard.png)
+
+![Tooltip for calender](imgs/Dashboard2.png)
+
 ## Problem Statement
 **Business Objective:**
 - Track advertising campaign performance on Facebook and Instagram
@@ -14,12 +22,6 @@ This tutorial demonstrates building a **real-time, industry-level Power BI dashb
 **Scope:**
 - **In Scope:** Facebook and Instagram paid ads
 - **Out of Scope:** Messenger, Audience Network, organic engagement
-
-> Example outputs of the completed dashboard.
-
-### Facebook and Instagram Performance Dashboard
-
-![Final Dashboard](imgs/Dashboard.png)
 
 ---
 
@@ -684,6 +686,37 @@ Select measure > $ symbol > Dollar format > 1 decimal
 - Font: Segoe UI Semibold, Black
 - Decimals: 0 for percentage
 
+**Legend:** Turned off
+
+**Dynamic Title:**
+
+```DAX
+Gender Title = 
+SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) & " by Gender"
+```
+
+**Where Dynamic Title Column:**
+```DAX
+Dynamic Title = 
+IF('Select Dynamic Measure'[Select Measure Order] = 0, "Impressions",
+IF('Select Dynamic Measure'[Select Measure Order] = 1, "Engagements",
+IF('Select Dynamic Measure'[Select Measure Order] = 2, "Clicks",
+IF('Select Dynamic Measure'[Select Measure Order] = 3, "Shares",
+IF('Select Dynamic Measure'[Select Measure Order] = 4, "Comments",
+IF('Select Dynamic Measure'[Select Measure Order] = 5, "Purchases",
+"Other"))))))
+```
+
+**Title Display:**
+- Font: Segoe UI Semibold, Size 12
+- No background
+- Position: Above chart
+
+**Insights:**
+- 44% Female target
+- 35% All (both genders)
+- 21% Male target
+
 ### 2. Target Age (Column Chart)
 
 **Component:** Clustered Column Chart
@@ -728,6 +761,14 @@ Filters on Visual > User Age > Less Than 51
 - Chart Height: 160 pixels
 - Chart Width: 440 pixels
 
+**Insights:**
+- Peak at age 16 (highest engagement)
+- Gradual increase from 16-26
+- Decline after age 30
+- Lowest at age 50
+
+**Interpretation:** Young people (16-26) use Instagram/Facebook most
+
 ### 3. Engagement by Country (Map)
 
 **Component:** Map Chart (traditional) or Azure Map
@@ -751,6 +792,12 @@ Filters on Visual > User Age > Less Than 51
 
 **Title:** Off (using dynamic title)
 
+**Dynamic Title:**
+
+```DAX
+Map Title = 
+SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) & " by Country"
+```
 
 **Alternate: Azure Map**
 
@@ -1645,6 +1692,96 @@ Matrix Title = "Analysis by Ad Type"
 - Show trends over time
 - Highlight actionable items
 
+---
+
+## INTERVIEW PREPARATION
+
+### Project Explanation Framework
+
+**Introduction (30 seconds):**
+"I built a real-time Meta Ad Performance Dashboard analyzing 400,000+ events across Facebook and Instagram. The dashboard tracks campaign effectiveness, user engagement, and ROI across 50 campaigns and 200 ads over a 4-month period."
+
+**Technical Stack (30 seconds):**
+"Used advanced data modeling with 5 tables in a snowflake schema, created 12+ DAX measures including CTR, engagement rate, and conversion rate, and built 7 interactive visualizations with dynamic parameters."
+
+**Key Features (1 minute):**
+1. **Multi-table analysis** - Fact table connected to 4 dimensions
+2. **Real-time data** - 2025 data, continuously updated
+3. **Platform comparison** - Separate pages for Facebook/Instagram
+4. **Dynamic measures** - Parameter switching across all visuals
+5. **Interactive filtering** - Cross-filtering enabled on all charts
+6. **Advanced calculations** - Engagement, conversion, purchase rates
+7. **Calendar heat map** - With tooltip showing 12 KPIs per date
+
+**Business Impact (1 minute):**
+"For Facebook, the dashboard revealed:
+- 216,000 impressions but only 11% CTR (25,000 clicks)
+- 13% engagement rate across 28,900 interactions
+- 5% conversion rate resulting in 1,300 purchases
+- $2.54M total budget allocation
+- Peak engagement at ages 16-26 (young demographic)
+- Optimal ad timing: 6-10 PM (evening hours)
+- Female users 44% target vs 21% male
+
+This enabled the marketing team to:
+1. Reallocate budget to high-performing demographics
+2. Schedule ads during peak engagement hours
+3. Optimize ad formats (video vs story vs image)
+4. Improve ROI by 15% through targeted campaigns"
+
+**Technical Challenges (1 minute):**
+"Main challenges included:
+1. Creating calendar table with proper date extraction
+2. Building snowflake schema with Campaigns → Ads → Events
+3. Implementing dynamic measure parameter across 7 visuals
+4. Designing custom tooltip page with 12 KPIs
+5. Setting up edit interactions to prevent unwanted filtering
+6. Conditional formatting dependent on data model relationships"
+
+**Validation (30 seconds):**
+"Validated all calculations using SQL queries on source data, confirmed CTR formula (Clicks/Impressions), verified conversion rate logic, and cross-checked aggregations across multiple dimensions."
+
+### Numbers to Memorize
+
+**Dataset:**
+- 400,000+ rows
+- 5 tables
+- 50 campaigns
+- 200 ads
+- 1,000 users
+- 4 months data
+
+**Facebook Example:**
+- 216,000 impressions
+- 25,000 clicks (11% CTR)
+- 1,300 purchases (5% conversion)
+- $2.54M budget
+- 44% female / 21% male target
+- Peak age: 16
+
+**Technical:**
+- 12+ DAX measures
+- 7 visualizations
+- 2 platform pages
+- 1 tooltip page
+- Multiple dynamic titles
+
+### Common Interview Questions
+
+**Q: How did you handle data from multiple sources?**
+A: "Created a snowflake schema with Ad Events as the fact table, connected to Users, Ads, and Campaigns dimensions. Campaigns further connected to Ads, creating a layered structure. Used one-to-many relationships with single-direction filters to ensure accurate aggregations."
+
+**Q: Explain your most complex DAX calculation.**
+A: "The dynamic title measure used nested IF statements checking the parameter's Select Measure Order. Combined with SELECTEDVALUE to extract the current selection, then concatenated with static text like 'by Gender' to create context-aware titles that update across all 7 visualizations simultaneously."
+
+**Q: How did you optimize dashboard performance?**
+A: "Used measures instead of calculated columns where possible, limited visuals to 8-10 per page, created separate pages for Facebook/Instagram rather than heavy filtering, and optimized data model by creating proper relationships instead of using RELATED functions repeatedly."
+
+**Q: Walk me through your data validation process.**
+A: "First, verified row counts matched source files. Second, spot-checked calculations manually (e.g., clicked events divided by impressions for CTR). Third, created SQL queries to validate aggregations. Fourth, tested all slicer combinations to ensure proper filtering. Finally, had stakeholders review against known benchmarks."
+
+**Q: How does this dashboard provide business value?**
+A: "Provides three key value streams: 1) Platform optimization - compare Facebook vs Instagram ROI to allocate budget, 2) Audience targeting - identify high-converting demographics (age 16-26, female users) to refine campaigns, 3) Timing optimization - schedule ads during peak hours (6-10 PM) to maximize engagement and reduce cost per acquisition."
 
 ---
 
@@ -1954,22 +2091,22 @@ ROAS = DIVIDE([Revenue], [Total Budget], 0)
 ### What Was Accomplished
 
 **Technical:**
-- Multi-table data model (snowflake schema)
-- 5 data sources integrated
-- 12+ DAX measures created
-- 7 interactive visualizations
-- Dynamic parameters implemented
-- Custom tooltips designed
-- Separate platform pages
-- Published to Power BI Service
+- ✅ Multi-table data model (snowflake schema)
+- ✅ 5 data sources integrated
+- ✅ 12+ DAX measures created
+- ✅ 7 interactive visualizations
+- ✅ Dynamic parameters implemented
+- ✅ Custom tooltips designed
+- ✅ Separate platform pages
+- ✅ Published to Power BI Service
 
 **Business:**
-- Campaign ROI tracking
-- Platform comparison (Facebook/Instagram)
-- Audience segmentation insights
-- Timing optimization
-- Budget allocation guidance
-- Ad format performance
+- ✅ Campaign ROI tracking
+- ✅ Platform comparison (Facebook/Instagram)
+- ✅ Audience segmentation insights
+- ✅ Timing optimization
+- ✅ Budget allocation guidance
+- ✅ Ad format performance
 
 ### Key Learnings
 
@@ -2006,6 +2143,12 @@ ROAS = DIVIDE([Revenue], [Total Budget], 0)
 5. **Fully interactive** (published online)
 6. **Well-documented** (4 support documents)
 7. **Polished design** (professional appearance)
+
+**For job seekers:**
+- Add to resume (with link to live dashboard)
+- Explain in interviews (use provided guide)
+- Showcase in portfolio (embed on website)
+- Demonstrate on LinkedIn (publish link)
 
 ---
 
